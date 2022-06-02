@@ -1,0 +1,20 @@
+<div class="results">
+  <ul class="results__list">
+    <li *ngFor="let recipe of recipes | paginate: config">
+        <a (click)="fetchRecipe(recipe.recipe_id)" href="{{recipe.recipe_id}}" class="results__link">
+            <figure class="results__fig">
+                <img [src]="recipe.image_url" alt="Test">
+            </figure>
+            <div class="results__data">
+                <h4 class="results__name">{{recipe.title}}</h4>
+                <p class="results__author">{{recipe.publisher}}</p>
+            </div>
+        </a>
+    </li>
+  </ul>
+
+  <pagination-controls (pageChange)="onPageChange($event)"
+    (pageBoundsCorrection)="onPageBoundsCorrection($event)" [autoHide]="true"
+    [responsive]="true" previousLabel="< Prev" nextLabel="Next >" screenReaderPaginationLabel="Pagination"
+    screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
+  </pagination-controls>
