@@ -1,10 +1,9 @@
+<app-spinner *ngIf="isLoading"></app-spinner>
 <div class="recipe">
-
-
   <figure class="recipe__fig">
-      <img src="/assets/img/test-1.jpg" alt="Tomato" class="recipe_/assets/_img">
+      <img [src]="recipe.image_url" alt="Tomato" class="recipe_/assets/_img">
       <h1 class="recipe__title">
-          <span>Pasta with tomato cream sauce</span>
+          <span>{{recipe.title}}</span>
       </h1>
   </figure>
   <div class="recipe__details">
@@ -12,7 +11,7 @@
           <svg class="recipe__info-icon">
               <use href="/assets/img/icons.svg#icon-stopwatch"></use>
           </svg>
-          <span class="recipe__info-data recipe__info-data--minutes">45</span>
+          <span class="recipe__info-data recipe__info-data--minutes">{{recipe.time}}</span>
           <span class="recipe__info-text"> minutes</span>
       </div>
       <div class="recipe__info">
@@ -43,74 +42,16 @@
       </button>
   </div>
 
-
-
   <div class="recipe__ingredients">
       <ul class="recipe__ingredient-list">
-          <li class="recipe__item">
+          <li *ngFor="let ingredient of recipe.ingredients" class="recipe__item">
               <svg class="recipe__icon">
                   <use href="/assets/img/icons.svg#icon-check"></use>
               </svg>
-              <div class="recipe__count">1000</div>
+              <div class="recipe__count">{{ingredient.count}}</div>
               <div class="recipe__ingredient">
-                  <span class="recipe__unit">g</span>
-                  pasta
-              </div>
-          </li>
-
-          <li class="recipe__item">
-              <svg class="recipe__icon">
-                  <use href="/assets/img/icons.svg#icon-check"></use>
-              </svg>
-              <div class="recipe__count">1/2</div>
-              <div class="recipe__ingredient">
-                  <span class="recipe__unit">cup</span>
-                  ricotta cheese
-              </div>
-          </li>
-
-          <li class="recipe__item">
-              <svg class="recipe__icon">
-                  <use href="/assets/img/icons.svg#icon-check"></use>
-              </svg>
-              <div class="recipe__count">1</div>
-              <div class="recipe__ingredient">
-                  <span class="recipe__unit"></span>
-                  can of tomatoes, whole or crushed
-              </div>
-          </li>
-
-
-          <li class="recipe__item">
-              <svg class="recipe__icon">
-                  <use href="/assets/img/icons.svg#icon-check"></use>
-              </svg>
-              <div class="recipe__count">1</div>
-              <div class="recipe__ingredient">
-                  <span class="recipe__unit"></span>
-                  can tuna packed in olive oil
-              </div>
-          </li>
-
-          <li class="recipe__item">
-              <svg class="recipe__icon">
-                  <use href="/assets/img/icons.svg#icon-check"></use>
-              </svg>
-              <div class="recipe__count">1/2</div>
-              <div class="recipe__ingredient">
-                  <span class="recipe__unit">cup</span>
-                  grated parmesan cheese
-              </div>
-          </li>
-
-          <li class="recipe__item">
-              <svg class="recipe__icon">
-                  <use href="/assets/img/icons.svg#icon-check"></use>
-              </svg>
-              <div class="recipe__count">1/4</div>
-              <div class="recipe__ingredient">
-                  <span class="recipe__unit">cup</span>
-                  fresh basil, chopped or torn
+                  <span class="recipe__unit">{{ingredient.unit}}</span>
+                  {{ingredient.ingredient}}
               </div>
           </li>
       </ul>
@@ -123,7 +64,7 @@
       </button>
   </div>
 
-  <div class="recipe__directions">
+  <!-- <div class="recipe__directions">
       <h2 class="heading-2">How to cook it</h2>
       <p class="recipe__directions-text">
           This recipe was carefully designed and tested by
@@ -136,6 +77,6 @@
           </svg>
 
       </a>
-  </div>
-  
+  </div> -->
+
 </div>

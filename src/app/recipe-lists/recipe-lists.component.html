@@ -1,5 +1,6 @@
 <div class="results">
   <ul class="results__list">
+    <app-spinner *ngIf="isLoading"></app-spinner>
     <li *ngFor="let recipe of recipes | paginate: config">
         <a (click)="fetchRecipe(recipe.recipe_id)" href="{{recipe.recipe_id}}" class="results__link">
             <figure class="results__fig">
@@ -14,7 +15,8 @@
   </ul>
 
   <pagination-controls (pageChange)="onPageChange($event)"
-    (pageBoundsCorrection)="onPageBoundsCorrection($event)" [autoHide]="true"
+    (pageBoundsCorrection)="onPageBoundsCorrection($event)" [autoHide]="recipes.length === 0"
     [responsive]="true" previousLabel="< Prev" nextLabel="Next >" screenReaderPaginationLabel="Pagination"
     screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
   </pagination-controls>
+</div>

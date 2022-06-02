@@ -12,6 +12,7 @@ import { IngredientsComponent } from './ingredients/ingredients.component';
 import { SearchBarComponent } from './search-bar/search-bar.component';
 
 import {NgxPaginationModule} from 'ngx-pagination';
+import { SpinnerComponent } from './ui/spinner/spinner.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -19,6 +20,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
     RecipeComponent,
     IngredientsComponent,
     SearchBarComponent,
+    SpinnerComponent,
   ],
   imports: [
     BrowserModule,

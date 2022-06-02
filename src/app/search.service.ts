@@ -13,13 +13,19 @@ export class SearchService {
   ) { }
 
   private results$ = new BehaviorSubject<Results>({count: 0, recipes: []})
+  public loading$ = new BehaviorSubject(false);
   recipes$ = this.results$.asObservable();
 
-  public isLoading = false;
 
   getResult(query: string) {
+    this.loading$.next(true);
+
+    // Clear the previous recipes
+    this.results$.next({count: 0, recipes: []})
+
     return this.http.get<Results>(`https://forkify-api.herokuapp.com/api/search?q=${query}`).subscribe((data) => {
       this.results$.next(data);
+      this.loading$.next(false)
     });
   }
 

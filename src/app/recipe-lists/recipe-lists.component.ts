@@ -11,6 +11,7 @@ import { RecipeService } from '../services/recipe.service';
   styleUrls: ['./recipe-lists.component.css']
 })
 export class RecipeListsComponent implements OnInit {
+  isLoading = false;
   recipes: Recipes[] = [];
   page: any;
   maxSize: number = 9;
@@ -32,16 +33,16 @@ export class RecipeListsComponent implements OnInit {
       this.recipes = data.recipes
 
       console.log(this.recipes);
-    })
+    });
+
+    this.searchService.loading$.subscribe((loading) => this.isLoading = loading)
   }
 
   fetchRecipe(recipeId: number) {
 
     this.recipeService.getRecipe(recipeId);
 
-    const recipe: Recipes | {} = this.recipeService.Recipe();
-
-    console.log(recipe);
+    this.recipeService.calcTime();
 
     return false;
   }
