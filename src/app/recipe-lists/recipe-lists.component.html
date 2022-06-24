@@ -1,7 +1,7 @@
 <div class="results">
   <ul class="results__list">
     <app-spinner *ngIf="isLoading"></app-spinner>
-    <li *ngFor="let recipe of recipes | paginate: config">
+    <li *ngFor="let recipe of recipes | paginate: { itemsPerPage: 10, currentPage: page }">
         <a (click)="fetchRecipe(recipe.recipe_id)" href="{{recipe.recipe_id}}" class="results__link">
             <figure class="results__fig">
                 <img [src]="recipe.image_url" alt="Test">
@@ -14,9 +14,5 @@
     </li>
   </ul>
 
-  <pagination-controls (pageChange)="onPageChange($event)"
-    (pageBoundsCorrection)="onPageBoundsCorrection($event)" [autoHide]="recipes.length === 0"
-    [responsive]="true" previousLabel="< Prev" nextLabel="Next >" screenReaderPaginationLabel="Pagination"
-    screenReaderPageLabel="page" screenReaderCurrentLabel="You're on page">
-  </pagination-controls>
+  <pagination-controls [autoHide]="true" class="my-pagination" (pageChange)="page = $event"></pagination-controls>
 </div>

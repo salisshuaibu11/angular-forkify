@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
-
 import { Recipe } from '../recipe';
+
+import { ShoppingListService } from './shopping-list.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +14,7 @@ export class RecipeService {
   public loading$ = new BehaviorSubject(false);
   public recipe$ = new BehaviorSubject<Recipe>({
     recipe: {
-      image_url: "http://forkify-api.herokuapp.com/images/best_pizza_dough_recipe1b20.jp",
+      image_url: "http://forkify-api.herokuapp.com/images/best_pizza_dough_recipe1b20.jpg",
       ingredients: [
         {count: 4.5, unit: 'cup', ingredient: 'unbleached high-gluten, bread, or all-purpose flour, chilled'},
         {count: 1, unit: '', ingredient: '3/4 tsps salt'}
@@ -24,16 +25,31 @@ export class RecipeService {
       social_rank: 100,
       source_url: "http://www.101cookbooks.com/archives/001199.html",
       title: "Best Pizza Dough Ever",
-      time: 10
+      time: 10,
+      servings: 4,
     }
   });
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private shoppingListService: ShoppingListService
   ) { }
 
   getRecipe(recideId: number) {
     this.loading$.next(true);
+
+    this.recipe$.next({recipe: {
+      image_url: "",
+      ingredients: [],
+      publisher: "",
+      publisher_url: "",
+      recipe_id: "",
+      social_rank: 100,
+      source_url: "",
+      title: "",
+      time: 10,
+      servings: 4,
+    }})
 
     this.http.get<Recipe>(`https://forkify-api.herokuapp.com/api/get?rId=${recideId}`)
       .subscribe((recipe) => {
@@ -43,8 +59,9 @@ export class RecipeService {
         // Parse ingredients
         this.parseIngredients();
 
-        // Calculate the time
-        this.calcTime()
+        // Calculate time and servings
+        this.calcTime();
+        this.calculateServings();
       })
   }
 
@@ -61,7 +78,27 @@ export class RecipeService {
 
     // Set recipe to newly created recipe
     this.recipe$.next({recipe: newRecipe});
+  };
+
+  calculateServings() {
+    const {recipe}: Recipe = this.recipe$.getValue();
+
+    this.recipe$.next({recipe: {...recipe, servings: 4}})
   }
+
+  updateServings(type: string) {
+    const {recipe}: Recipe = this.recipe$.getValue();
+
+    // Servings
+    const newServings = type === 'dec' ? recipe.servings - 1 : recipe.servings + 1;
+
+    // Ingredients
+    recipe.ingredients.forEach(ing => {
+        ing.count *= (newServings / recipe.servings);
+    });
+
+    this.recipe$.next({recipe: {...recipe, servings: newServings}})
+  };
 
   parseIngredients() {
     const { recipe }: Recipe = this.recipe$.getValue();
@@ -128,7 +165,15 @@ export class RecipeService {
 
     // Set recipe to newly created recipe
     this.recipe$.next({recipe: newRecipe});
-
-    console.log(newIngredients)
   };
+
+  addToShoppingList() {
+    const { recipe }: Recipe = this.recipe$.getValue();
+
+    this.shoppingListService.clearIngredientState();
+
+    recipe.ingredients.forEach(el => {
+      this.shoppingListService.addIngredient(el?.count, el?.unit, el?.ingredient);
+    });
+  }
 }

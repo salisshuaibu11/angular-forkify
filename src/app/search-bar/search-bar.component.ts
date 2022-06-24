@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SearchService } from '../search.service';
 import { Results } from '../models/Search';
+import { LikesService } from '../services/likes.service';
+import { Like } from '../likes';
 
 @Component({
   selector: 'app-search-bar',
@@ -9,12 +11,16 @@ import { Results } from '../models/Search';
 })
 
 export class SearchBarComponent implements OnInit {
+  likes: any = [];
+
   constructor(
-    private searchService: SearchService
+    private searchService: SearchService,
+    private likesService: LikesService
   ) {
   }
 
   ngOnInit(): void {
+    this.likesService.like$.subscribe(() => this.likes = this.likesService.likes);
   }
 
   onSubmit(recipe: HTMLInputElement) {

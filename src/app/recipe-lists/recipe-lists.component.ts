@@ -16,12 +16,6 @@ export class RecipeListsComponent implements OnInit {
   page: any;
   maxSize: number = 9;
 
-  public config: PaginationInstance = {
-    id: 'advanced',
-    itemsPerPage: 10,
-    currentPage: 1
-  }
-
   constructor(
     private searchService: SearchService,
     private recipeService: RecipeService
@@ -31,8 +25,6 @@ export class RecipeListsComponent implements OnInit {
   ngOnInit(): void {
     this.searchService.recipes$.subscribe((data) => {
       this.recipes = data.recipes
-
-      console.log(this.recipes);
     });
 
     this.searchService.loading$.subscribe((loading) => this.isLoading = loading)
@@ -45,13 +37,5 @@ export class RecipeListsComponent implements OnInit {
     this.recipeService.calcTime();
 
     return false;
-  }
-
-  onPageChange(number: number) {
-    this.config.currentPage = number;
-  }
-
-  onPageBoundsCorrection(number: number) {
-    this.config.currentPage = number;
   }
 }
